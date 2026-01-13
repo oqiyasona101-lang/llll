@@ -1,0 +1,66 @@
+import { LotteryRecord, LotteryType } from './types';
+
+export const MOCK_HISTORY: Record<LotteryType, LotteryRecord[]> = {
+  [LotteryType.DALETOU]: [
+    { issue: '25011', redBalls: [3, 6, 7, 11, 27], blueBalls: [2, 8], date: '2025-01-27' },
+    { issue: '25010', redBalls: [5, 21, 28, 30, 32], blueBalls: [7, 12], date: '2025-01-25' },
+    { issue: '25009', redBalls: [3, 19, 21, 30, 32], blueBalls: [6, 9], date: '2025-01-22' },
+    { issue: '25008', redBalls: [1, 5, 7, 13, 35], blueBalls: [5, 12], date: '2025-01-20' },
+    { issue: '25007', redBalls: [15, 22, 23, 25, 31], blueBalls: [1, 9], date: '2025-01-18' },
+    { issue: '25006', redBalls: [3, 4, 13, 19, 35], blueBalls: [3, 10], date: '2025-01-15' },
+    { issue: '25005', redBalls: [5, 6, 8, 31, 32], blueBalls: [9, 11], date: '2025-01-13' },
+    { issue: '25004', redBalls: [2, 5, 9, 13, 33], blueBalls: [1, 7], date: '2025-01-11' },
+    { issue: '25003', redBalls: [10, 25, 30, 32, 34], blueBalls: [4, 10], date: '2025-01-08' },
+    { issue: '25002', redBalls: [19, 21, 22, 28, 32], blueBalls: [6, 9], date: '2025-01-06' },
+    { issue: '25001', redBalls: [5, 8, 16, 17, 27], blueBalls: [4, 7], date: '2025-01-04' },
+    { issue: '24152', redBalls: [1, 2, 7, 8, 31], blueBalls: [2, 10], date: '2024-12-30' },
+    { issue: '24151', redBalls: [5, 12, 17, 19, 35], blueBalls: [10, 11], date: '2024-12-28' },
+    { issue: '24150', redBalls: [4, 11, 23, 25, 34], blueBalls: [5, 7], date: '2024-12-25' },
+    { issue: '24149', redBalls: [2, 5, 16, 18, 22], blueBalls: [7, 9], date: '2024-12-23' },
+  ],
+  [LotteryType.SSQ]: [
+    { issue: '2025012', redBalls: [7, 11, 13, 18, 27, 31], blueBalls: [11], date: '2025-01-28' },
+    { issue: '2025011', redBalls: [6, 13, 17, 22, 24, 29], blueBalls: [11], date: '2025-01-26' },
+    { issue: '2025010', redBalls: [4, 6, 7, 16, 17, 21], blueBalls: [8], date: '2025-01-23' },
+    { issue: '2025009', redBalls: [2, 4, 11, 12, 23, 25], blueBalls: [6], date: '2025-01-21' },
+    { issue: '2025008', redBalls: [9, 14, 16, 17, 25, 33], blueBalls: [11], date: '2025-01-19' },
+    { issue: '2025007', redBalls: [7, 8, 14, 18, 21, 27], blueBalls: [11], date: '2025-01-16' },
+    { issue: '2025006', redBalls: [1, 7, 8, 17, 20, 22], blueBalls: [6], date: '2025-01-14' },
+    { issue: '2025005', redBalls: [10, 16, 19, 27, 28, 30], blueBalls: [9], date: '2025-01-12' },
+    { issue: '2025004', redBalls: [3, 7, 17, 27, 29, 32], blueBalls: [4], date: '2025-01-09' },
+    { issue: '2025003', redBalls: [10, 19, 20, 26, 28, 29], blueBalls: [15], date: '2025-01-07' },
+    { issue: '2025002', redBalls: [9, 12, 13, 15, 22, 26], blueBalls: [11], date: '2025-01-05' },
+    { issue: '2025001', redBalls: [2, 3, 17, 18, 22, 33], blueBalls: [16], date: '2025-01-02' },
+    { issue: '2024151', redBalls: [5, 10, 16, 19, 29, 32], blueBalls: [4], date: '2024-12-31' },
+    { issue: '2024150', redBalls: [13, 14, 20, 22, 26, 32], blueBalls: [2], date: '2024-12-29' },
+    { issue: '2024149', redBalls: [3, 9, 16, 17, 18, 22], blueBalls: [16], date: '2024-12-26' },
+  ],
+  [LotteryType.HAPPY8]: [
+    { issue: '2025027', redBalls: [1, 9, 10, 12, 14, 16, 19, 24, 28, 35, 38, 40, 49, 53, 56, 58, 64, 67, 71, 77], date: '2025-01-27' },
+    { issue: '2025026', redBalls: [4, 11, 12, 13, 17, 20, 23, 33, 40, 43, 44, 50, 53, 60, 63, 65, 67, 68, 72, 80], date: '2025-01-26' },
+    { issue: '2025025', redBalls: [2, 3, 5, 7, 12, 13, 23, 26, 29, 39, 43, 44, 48, 60, 62, 63, 64, 74, 77, 79], date: '2025-01-25' },
+    { issue: '2025024', redBalls: [1, 7, 10, 12, 16, 21, 25, 26, 29, 30, 33, 34, 36, 37, 41, 53, 71, 72, 73, 75], date: '2025-01-24' },
+    { issue: '2025023', redBalls: [5, 6, 7, 8, 13, 17, 21, 25, 32, 33, 36, 41, 46, 55, 59, 62, 68, 70, 74, 76], date: '2025-01-23' },
+    { issue: '2025022', redBalls: [3, 6, 8, 11, 14, 15, 20, 25, 26, 28, 39, 49, 54, 56, 57, 61, 63, 66, 76, 77], date: '2025-01-22' },
+    { issue: '2025021', redBalls: [6, 8, 10, 11, 13, 14, 27, 30, 32, 33, 35, 38, 47, 50, 52, 56, 62, 65, 71, 76], date: '2025-01-21' },
+    { issue: '2025020', redBalls: [1, 2, 5, 6, 11, 14, 21, 26, 37, 40, 41, 43, 45, 50, 57, 60, 61, 67, 73, 78], date: '2025-01-20' },
+    { issue: '2025019', redBalls: [2, 3, 12, 16, 18, 21, 24, 33, 45, 46, 50, 53, 55, 62, 68, 70, 71, 72, 79, 80], date: '2025-01-19' },
+    { issue: '2025018', redBalls: [5, 9, 13, 22, 23, 24, 28, 31, 33, 34, 37, 45, 46, 48, 50, 52, 55, 63, 72, 76], date: '2025-01-18' },
+    { issue: '2025017', redBalls: [1, 3, 7, 13, 18, 27, 31, 32, 37, 43, 47, 48, 51, 52, 53, 61, 64, 65, 73, 80], date: '2025-01-17' },
+    { issue: '2025016', redBalls: [1, 2, 11, 15, 16, 19, 23, 32, 43, 45, 46, 48, 53, 55, 57, 62, 68, 77, 79, 80], date: '2025-01-16' },
+  ],
+  [LotteryType.QXC]: [
+    { issue: '25012', redBalls: [6, 2, 9, 4, 1, 8], blueBalls: [11], date: '2025-01-28' },
+    { issue: '25011', redBalls: [3, 7, 0, 5, 2, 9], blueBalls: [5], date: '2025-01-26' },
+    { issue: '25010', redBalls: [1, 8, 4, 2, 6, 3], blueBalls: [12], date: '2025-01-24' },
+    { issue: '25009', redBalls: [9, 5, 1, 8, 7, 0], blueBalls: [3], date: '2025-01-21' },
+    { issue: '25008', redBalls: [2, 4, 6, 3, 9, 1], blueBalls: [8], date: '2025-01-19' },
+  ]
+};
+
+export const DEFAULT_CONFIG = {
+  monteCarloIterations: 10000,
+  lstmEpochs: 100,
+  recentWeight: 0.7,
+  useCRF: true,
+};

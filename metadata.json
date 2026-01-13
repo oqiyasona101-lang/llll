@@ -1,0 +1,5 @@
+{
+  "name": "AI 彩票预测分析师",
+  "description": "基于历史数据，结合蒙特卡洛模拟、LSTM神经网络逻辑与统计学偏差分析的智能彩票辅助分析工具。",
+  "requestFramePermissions": []
+}
