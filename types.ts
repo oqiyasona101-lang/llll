@@ -36,3 +36,19 @@ export interface ModelConfig {
   recentWeight: number; // 0.1 - 1.0
   useCRF: boolean;
 }
+
+export interface FrequencyStat {
+  number: number;
+  count: number;
+}
+
+export interface PairStat {
+  pair: string; // "1-5"
+  count: number;
+}
+
+export interface LotteryStatistics {
+  redFreq: FrequencyStat[];
+  blueFreq: FrequencyStat[];
+  topRedPairs: PairStat[];
+}

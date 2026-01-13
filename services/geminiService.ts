@@ -51,6 +51,14 @@ export const analyzeLotteryData = async (
     `Issue ${h.issue}: Red[${h.redBalls.join(', ')}] ${h.blueBalls ? `Blue[${h.blueBalls.join(', ')}]` : ''}`
   ).join('\n');
 
+  // Specific strategy injection based on lottery type
+  let strategyNote = "";
+  if (type === LotteryType.HAPPY8) {
+    strategyNote = "特别注意：快乐八游戏重号率极高（通常每期重复4-6个上期号码），且常有连号（如 23,24,25）和同尾号（如 8,18,28）。请基于这些特征进行高精度筛选。";
+  } else if (type === LotteryType.SSQ || type === LotteryType.DALETOU) {
+    strategyNote = "特别注意：分析红球的三区比（区间分布）和蓝球的冷热遗漏周期。";
+  }
+
   const prompt = `
     作为一名世界级的彩票数据科学家和预测专家，请利用我提供的历史开奖数据，对【${type}】进行深度建模和预测。
     
@@ -62,6 +70,8 @@ export const analyzeLotteryData = async (
     4. **CRF (条件随机场)**: ${config.useCRF ? '启用 CRF 模型' : '忽略 CRF 模型'}，分析号码之间的相邻依赖性和转移概率，预测号码组合的连贯性。
     5. **迭代修正与偏差分析 (Iterative Correction & Deviation)**: 计算近期数据相对于理论概率的偏离度（标准差），并对预测结果进行加权赋值修正。
 
+    ${strategyNote}
+
     历史数据 (输入样本):
     ${historyStr}
 
@@ -69,13 +79,13 @@ export const analyzeLotteryData = async (
     对于【${type}】:
     - 大乐透: 前区1-35 (选5), 后区1-12 (选2)
     - 双色球: 红球1-33 (选6), 蓝球1-16 (选1)
-    - 快乐八: 1-80 (选出概率最高的20个)
+    - 快乐八: 1-80 (针对“选十”玩法，利用遗漏值、热号惯性和邻号规律，应用高精度算法剔除干扰，仅输出10个绝对置信度最高的“金胆”号码)
     - 七星彩: 0-9 (分析每一位的分布)
 
     请返回严格的JSON格式数据，包含：
     - 结合了LSTM和蒙特卡洛权重的每个号码的出号概率。
     - 详细的分析摘要，解释模型是如何根据近期偏离度进行修正的。
-    - 3组基于模型的高置信度推荐组合。
+    - 3组基于模型的高置信度推荐组合 (Happy 8 请严格只给10个红球)。
   `;
 
   try {

@@ -101,7 +101,7 @@ const App: React.FC = () => {
             )}
 
             {!loading && result && (
-              <AnalysisResultView result={result} />
+              <AnalysisResultView result={result} history={currentHistory} />
             )}
 
             {!loading && !result && !error && (

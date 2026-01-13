@@ -42,9 +42,9 @@ const ConfigPanel: React.FC<Props> = ({ config, setConfig, disabled, onRun }) =>
           </label>
           <input
             type="range"
-            min="50"
-            max="1000"
-            step="50"
+            min="100"
+            max="10000"
+            step="100"
             value={config.lstmEpochs}
             onChange={(e) => setConfig({ ...config, lstmEpochs: parseInt(e.target.value) })}
             className="w-full h-2 bg-gray-700 rounded-lg appearance-none cursor-pointer accent-purple-500"

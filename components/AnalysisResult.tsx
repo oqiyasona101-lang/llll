@@ -1,18 +1,26 @@
-import React from 'react';
-import { PredictionResult, BallProbability } from '../types';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell } from 'recharts';
+import React, { useMemo } from 'react';
+import { PredictionResult, LotteryRecord, LotteryType } from '../types';
+import { calculateStatistics } from '../utils/statistics';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, Cell, CartesianGrid } from 'recharts';
 
 interface Props {
   result: PredictionResult;
+  history: LotteryRecord[]; // Pass history for statistical calculation
 }
 
-const AnalysisResult: React.FC<Props> = ({ result }) => {
+const AnalysisResult: React.FC<Props> = ({ result, history }) => {
   // Sort probabilities to show highest first
   const sortedRed = [...result.redBallProbabilities].sort((a, b) => b.probability - a.probability).slice(0, 15);
-  const sortedBlue = result.blueBallProbabilities ? [...result.blueBallProbabilities].sort((a, b) => b.probability - a.probability).slice(0, 8) : [];
+  
+  // Calculate Statistics
+  const statistics = useMemo(() => calculateStatistics(history), [history]);
+  
+  // Prepare data for frequency charts (Top 20 most frequent)
+  const redFreqData = statistics.redFreq.slice(0, 20);
+  const blueFreqData = statistics.blueFreq.slice(0, 15);
 
   return (
-    <div className="space-y-6 animate-fade-in">
+    <div className="space-y-6 animate-fade-in pb-12">
       {/* Summary Card */}
       <div className="bg-gray-800 rounded-xl p-6 border-l-4 border-green-500 shadow-lg">
         <h3 className="text-xl font-bold text-white mb-2">AI 分析摘要</h3>
@@ -51,12 +59,13 @@ const AnalysisResult: React.FC<Props> = ({ result }) => {
         </div>
       </div>
 
-      {/* Probabilities Chart */}
+      {/* Probabilities Chart (Prediction) */}
       <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
-        <h3 className="text-lg font-bold text-white mb-6">高概率号码分布 (Top 15)</h3>
+        <h3 className="text-lg font-bold text-white mb-6">本期预测：高概率号码 (Top 15)</h3>
         <div className="h-64 w-full">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={sortedRed} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+              <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
               <XAxis dataKey="number" stroke="#9CA3AF" />
               <YAxis stroke="#9CA3AF" />
               <Tooltip 
@@ -71,9 +80,76 @@ const AnalysisResult: React.FC<Props> = ({ result }) => {
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-4 text-center text-sm text-gray-500">
-          基于 {sortedRed.length} 个高频号码的 LSTM 预测权重分布
+      </div>
+
+      {/* Historical Statistics Section */}
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        {/* Red Ball Frequency */}
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h3 className="text-lg font-bold text-white mb-4">历史数据：红球出现次数 (Top 20)</h3>
+          <div className="h-64 w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={redFreqData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#374151" horizontal={false} />
+                <XAxis type="number" stroke="#9CA3AF" hide />
+                <YAxis dataKey="number" type="category" stroke="#9CA3AF" width={30} />
+                <Tooltip 
+                  contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#fff' }}
+                  cursor={{fill: 'rgba(255,255,255,0.05)'}}
+                />
+                <Bar dataKey="count" name="出现次数" fill="#DC2626" radius={[0, 4, 4, 0]} barSize={20} />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
         </div>
+
+        {/* Top Pairs */}
+        <div className="bg-gray-800 rounded-xl p-6 shadow-lg">
+          <h3 className="text-lg font-bold text-white mb-4">历史数据：最热红球组合 (双号)</h3>
+          <div className="overflow-hidden">
+            <table className="w-full text-sm text-left text-gray-400">
+              <thead className="text-xs uppercase bg-gray-700 text-gray-300">
+                <tr>
+                  <th className="px-4 py-3">组合</th>
+                  <th className="px-4 py-3 text-right">出现次数</th>
+                </tr>
+              </thead>
+              <tbody>
+                {statistics.topRedPairs.map((pair, idx) => (
+                  <tr key={idx} className="border-b border-gray-700 hover:bg-gray-750">
+                    <td className="px-4 py-2 font-medium text-white flex gap-2">
+                       {pair.pair.split('-').map(n => (
+                         <span key={n} className="inline-block bg-red-900 text-red-200 px-2 py-0.5 rounded text-xs">{n}</span>
+                       ))}
+                    </td>
+                    <td className="px-4 py-2 text-right text-blue-400 font-mono">{pair.count}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        {/* Blue Ball Frequency (Only for types that have blue balls) */}
+        {statistics.blueFreq.length > 0 && (
+          <div className="bg-gray-800 rounded-xl p-6 shadow-lg lg:col-span-2">
+            <h3 className="text-lg font-bold text-white mb-4">历史数据：蓝球/特别号出现次数</h3>
+            <div className="h-48 w-full">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={blueFreqData} margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
+                  <XAxis dataKey="number" stroke="#9CA3AF" />
+                  <YAxis stroke="#9CA3AF" />
+                  <Tooltip 
+                    contentStyle={{ backgroundColor: '#1F2937', borderColor: '#374151', color: '#fff' }}
+                    itemStyle={{ color: '#fff' }}
+                  />
+                  <Bar dataKey="count" name="出现次数" fill="#2563EB" radius={[4, 4, 0, 0]} />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
